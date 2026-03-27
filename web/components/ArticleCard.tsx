@@ -1,0 +1,76 @@
+'use client';
+
+import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
+import type { Article } from '@shared/types';
+
+interface ArticleCardProps {
+  article: Article;
+  isRead?: boolean;
+  onMarkRead?: (id: string) => void;
+}
+
+export default function ArticleCard({ article, isRead, onMarkRead }: ArticleCardProps) {
+  // Format date as "Mar 12, 2026"
+  let formattedDate = '日期未知';
+  try {
+    const publishDate = new Date(article.publishedAt);
+    if (!isNaN(publishDate.getTime())) {
+      // For GitHub Trending, show time range label
+      if (article.sourceId === 'github-trending' && article.timeRange) {
+        const rangeLabels = {
+          'daily': '今日热门',
+          'weekly': '本周热门',
+          'monthly': '本月热门'
+        };
+        formattedDate = rangeLabels[article.timeRange];
+      } else {
+        formattedDate = format(publishDate, 'MMM d, yyyy', { locale: zhCN });
+      }
+    }
+  } catch (error) {
+    console.error('Failed to format article date:', error);
+  }
+
+  return (
+    <a
+      href={article.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => onMarkRead?.(article.id)}
+      className="group grid grid-cols-[140px_1fr_2fr] gap-4 py-3 px-4 border-b border-[hsl(var(--border))] last:border-b-0 hover:bg-[hsl(var(--accent))]/30 transition-colors"
+    >
+      {/* Date Column */}
+      <div className="flex items-center gap-2 text-sm text-[hsl(var(--muted-foreground))]">
+        {!isRead && (
+          <span className="inline-flex flex-shrink-0 rounded-full h-1.5 w-1.5 bg-blue-500" />
+        )}
+        <span>{formattedDate}</span>
+      </div>
+
+      {/* Title Column with hover tooltip */}
+      <div className="flex items-center min-w-0">
+        <h3 
+          className={`text-sm font-normal leading-snug truncate transition-colors ${
+            isRead 
+              ? 'text-[hsl(var(--muted-foreground))]' 
+              : 'text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))]'
+          }`}
+          title={article.title}
+        >
+          {article.title}
+        </h3>
+      </div>
+
+      {/* Summary Column with hover tooltip */}
+      <div className="flex items-center min-w-0">
+        <p 
+          className="text-sm text-[hsl(var(--muted-foreground))] line-clamp-1"
+          title={article.summary || '暂无简介'}
+        >
+          {article.summary || '暂无简介'}
+        </p>
+      </div>
+    </a>
+  );
+}

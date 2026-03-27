@@ -1,0 +1,15 @@
+{
+  "name": "ai-info-hub",
+  "version": "1.0.0",
+  "description": "AI 消息汇集网站",
+  "private": true,
+  "workspaces": ["web", "fetcher"],
+  "scripts": {
+    "dev:web": "cd web && npm run dev",
+    "dev:fetch": "cd fetcher && npm run dev",
+    "fetch": "cd fetcher && npm start",
+    "build:web": "cd web && npm run build",
+    "start": "cd web && npm start",
+    "install:all": "npm install && cd web && npm install && cd ../fetcher && npm install"
+  }
+}
