@@ -10,6 +10,8 @@
     "fetch": "cd fetcher && npm start",
     "build:web": "cd web && npm run build",
     "start": "cd web && npm start",
-    "install:all": "npm install && cd web && npm install && cd ../fetcher && npm install"
+    "install:all": "npm install && cd web && npm install && cd ../fetcher && npm install",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   }
 }
