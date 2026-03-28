@@ -53,7 +53,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
   ) : null;
 
   return (
-    <div className="bg-[hsl(var(--card))] rounded-xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-300 hover:border-[hsl(var(--primary))]/30 hover:shadow-md">
+    <div className="bg-[hsl(var(--card))] rounded-xl border border-[hsl(var(--border))] overflow-hidden transition-[border-color,box-shadow] duration-300 hover:border-[hsl(var(--primary))]/30 hover:shadow-md">
       <div className="flex items-center hover:bg-[hsl(var(--accent))]/10 transition-colors">
         <button
           onClick={() => setIsExpanded(!isExpanded)}

@@ -252,15 +252,29 @@ export default function Home() {
       />
       <main className="max-w-[1600px] mx-auto px-8 py-4">
         {currentSources.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {currentSources.map((source) => (
-              <TimeGroupSourceCard
-                key={source.sourceId}
-                source={source}
-                readArticleIds={readArticleIds}
-                onMarkRead={markAsRead}
-              />
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+            {/* Left column */}
+            <div className="flex flex-col gap-4">
+              {currentSources.filter((_, i) => i % 2 === 0).map((source) => (
+                <TimeGroupSourceCard
+                  key={source.sourceId}
+                  source={source}
+                  readArticleIds={readArticleIds}
+                  onMarkRead={markAsRead}
+                />
+              ))}
+            </div>
+            {/* Right column */}
+            <div className="flex flex-col gap-4">
+              {currentSources.filter((_, i) => i % 2 === 1).map((source) => (
+                <TimeGroupSourceCard
+                  key={source.sourceId}
+                  source={source}
+                  readArticleIds={readArticleIds}
+                  onMarkRead={markAsRead}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
