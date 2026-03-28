@@ -1,11 +1,10 @@
 /**
- * Get today's time boundaries (00:00:00 - 23:59:59)
+ * Get today's time boundaries (last 24 hours)
  */
 export function getTodayBounds(): { start: Date; end: Date } {
   const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-  return { start, end };
+  const start = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  return { start, end: now };
 }
 
 /**

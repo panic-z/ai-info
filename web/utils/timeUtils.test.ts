@@ -12,35 +12,34 @@ import {
 
 describe('timeUtils', () => {
   describe('getTodayBounds', () => {
-    it('should return start at 00:00:00.000', () => {
+    it('should return start approximately 24 hours ago', () => {
+      const before = Date.now();
       const { start } = getTodayBounds();
-      expect(start.getHours()).toBe(0);
-      expect(start.getMinutes()).toBe(0);
-      expect(start.getSeconds()).toBe(0);
-      expect(start.getMilliseconds()).toBe(0);
+      const after = Date.now();
+      const expectedStart = before - 24 * 60 * 60 * 1000;
+      expect(start.getTime()).toBeGreaterThanOrEqual(expectedStart - 100);
+      expect(start.getTime()).toBeLessThanOrEqual(after - 24 * 60 * 60 * 1000 + 100);
     });
 
-    it('should return end at 23:59:59.999', () => {
+    it('should return end as current time', () => {
+      const before = Date.now();
       const { end } = getTodayBounds();
-      expect(end.getHours()).toBe(23);
-      expect(end.getMinutes()).toBe(59);
-      expect(end.getSeconds()).toBe(59);
-      expect(end.getMilliseconds()).toBe(999);
+      const after = Date.now();
+      expect(end.getTime()).toBeGreaterThanOrEqual(before);
+      expect(end.getTime()).toBeLessThanOrEqual(after);
     });
 
-    it('should return start and end on the same day', () => {
+    it('should return a 24-hour window', () => {
       const { start, end } = getTodayBounds();
-      expect(start.getFullYear()).toBe(end.getFullYear());
-      expect(start.getMonth()).toBe(end.getMonth());
-      expect(start.getDate()).toBe(end.getDate());
+      const diff = end.getTime() - start.getTime();
+      expect(diff).toBeGreaterThanOrEqual(24 * 60 * 60 * 1000 - 100);
+      expect(diff).toBeLessThanOrEqual(24 * 60 * 60 * 1000 + 100);
     });
 
-    it('should return today\'s date', () => {
+    it('should return start in current or previous day', () => {
       const now = new Date();
       const { start } = getTodayBounds();
-      expect(start.getFullYear()).toBe(now.getFullYear());
-      expect(start.getMonth()).toBe(now.getMonth());
-      expect(start.getDate()).toBe(now.getDate());
+      expect(start.getTime()).toBeLessThan(now.getTime());
     });
   });
 
@@ -179,26 +178,27 @@ describe('timeUtils', () => {
     });
 
     it('should return true for dates within today', () => {
-      // Use local time format (not UTC)
-      expect(isInToday('2026-03-25T00:00:00')).toBe(true);
-      expect(isInToday('2026-03-25T12:00:00')).toBe(true);
-      expect(isInToday('2026-03-25T23:59:59')).toBe(true);
+      // Mock: March 25 14:00, window is March 24 14:00 → March 25 14:00
+      expect(isInToday('2026-03-25T00:00:00')).toBe(true);  // within window
+      expect(isInToday('2026-03-25T12:00:00')).toBe(true);  // within window
+      expect(isInToday('2026-03-24T15:00:00')).toBe(true);  // yesterday but within 24h
     });
 
-    it('should return false for yesterday', () => {
-      expect(isInToday('2026-03-24T23:59:59')).toBe(false);
+    it('should return false for dates older than 24 hours', () => {
+      expect(isInToday('2026-03-24T13:59:59')).toBe(false); // more than 24h ago
     });
 
     it('should return false for tomorrow', () => {
       expect(isInToday('2026-03-26T00:00:00')).toBe(false);
     });
 
-    it('should handle exact midnight boundary', () => {
-      expect(isInToday('2026-03-25T00:00:00')).toBe(true);
+    it('should handle exact 24h boundary', () => {
+      expect(isInToday('2026-03-24T14:00:00')).toBe(true);  // exactly at start boundary
     });
 
     it('should handle exact end-of-day boundary', () => {
-      expect(isInToday('2026-03-25T23:59:59.999')).toBe(true);
+      expect(isInToday('2026-03-25T14:00:00')).toBe(true);  // exactly at end (now)
+      expect(isInToday('2026-03-25T23:59:59.999')).toBe(false); // after now
     });
 
     it('should return false for invalid date strings', () => {
@@ -356,20 +356,23 @@ describe('timeUtils', () => {
     });
 
     it('should handle dates at exact midnight boundaries', () => {
-      expect(isInToday('2026-03-25T00:00:00')).toBe(true);
-      expect(isInToday('2026-03-24T23:59:59')).toBe(false);
+      // Mock: March 25 14:00, window is March 24 14:00 → March 25 14:00
+      expect(isInToday('2026-03-25T00:00:00')).toBe(true);   // within window
+      expect(isInToday('2026-03-24T23:59:59')).toBe(true);   // within window (after March 24 14:00)
+      expect(isInToday('2026-03-24T13:59:59')).toBe(false);  // outside window
     });
 
     it('should handle dates at exact end-of-day boundaries', () => {
-      expect(isInToday('2026-03-25T23:59:59.999')).toBe(true);
+      expect(isInToday('2026-03-25T23:59:59.999')).toBe(false); // after now (14:00)
       expect(isInToday('2026-03-26T00:00:00')).toBe(false);
     });
 
     it('should handle millisecond precision', () => {
-      expect(isInToday('2026-03-24T23:59:59.999')).toBe(false);
-      expect(isInToday('2026-03-25T00:00:00.000')).toBe(true);
-      expect(isInToday('2026-03-25T23:59:59.999')).toBe(true);
-      expect(isInToday('2026-03-26T00:00:00.000')).toBe(false);
+      // Mock: March 25 14:00, window is March 24 14:00 → March 25 14:00
+      expect(isInToday('2026-03-24T13:59:59.999')).toBe(false); // just before window
+      expect(isInToday('2026-03-24T14:00:00.000')).toBe(true);  // start of window
+      expect(isInToday('2026-03-25T13:59:59.999')).toBe(true);  // within window
+      expect(isInToday('2026-03-26T00:00:00.000')).toBe(false); // after now
     });
   });
 
@@ -382,9 +385,13 @@ describe('timeUtils', () => {
     });
 
     it('should handle malformed ISO strings', () => {
-      expect(isInToday('2026-03-25')).toBe(true); // This is actually valid
-      expect(isInToday('2026-3-25')).toBe(true); // This might also work
-      expect(isInToday('2026/03/25')).toBe(true); // Date constructor is forgiving
+      const now = new Date();
+      const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const todayShortMonth = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      const todaySlash = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}`;
+      expect(isInToday(todayISO)).toBe(true); // This is actually valid
+      expect(isInToday(todayShortMonth)).toBe(true); // This might also work
+      expect(isInToday(todaySlash)).toBe(true); // Date constructor is forgiving
     });
 
     it('should handle completely invalid strings', () => {

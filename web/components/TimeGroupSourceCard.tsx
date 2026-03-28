@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import type { FetchResult, Article } from '@shared/types';
 
@@ -15,6 +15,10 @@ const INITIAL_DISPLAY_COUNT = 5;
 export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead }: TimeGroupSourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    if (!isExpanded) setShowAll(false);
+  }, [isExpanded]);
   
   const allArticles: Article[] = source.items
     .sort((a, b) => {
@@ -50,11 +54,11 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
 
   return (
     <div className="bg-[hsl(var(--card))] rounded-xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-300 hover:border-[hsl(var(--primary))]/30 hover:shadow-md">
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-4 hover:bg-[hsl(var(--accent))]/10 transition-colors text-left"
-      >
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+      <div className="flex items-center hover:bg-[hsl(var(--accent))]/10 transition-colors">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-3 flex-1 min-w-0 p-4 text-left"
+        >
           {/* Expand/Collapse Icon */}
           <div className="flex-shrink-0">
             {isExpanded ? (
@@ -63,7 +67,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
               <ChevronDown className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
             )}
           </div>
-          
+
           {/* Source Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
@@ -85,30 +89,29 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
               )}
             </p>
           </div>
-          
+
           {/* Unread Badge */}
           {unreadCount > 0 && (
             <span className="flex-shrink-0 px-2.5 py-1 bg-[hsl(var(--primary))] text-white text-sm font-semibold rounded-full">
               {unreadCount}
             </span>
           )}
-        </div>
-        
-        {/* Visit Source Link */}
+        </button>
+
+        {/* Visit Source Link - sibling of button, not nested inside */}
         {source.homepage && (
           <a
             href={source.homepage}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex-shrink-0 ml-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] transition-colors border border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]/30"
+            className="flex-shrink-0 mr-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] transition-colors border border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]/30"
             title={`访问 ${source.sourceName}`}
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>访问源</span>
           </a>
         )}
-      </button>
+      </div>
       
       {isExpanded && allArticles.length > 0 && (
         <div className="border-t border-[hsl(var(--border))]">
@@ -128,7 +131,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
                       'weekly': '本周热门',
                       'monthly': '本月热门'
                     };
-                    formattedDate = rangeLabels[article.timeRange];
+                    formattedDate = rangeLabels[article.timeRange as keyof typeof rangeLabels] ?? article.timeRange ?? '未知';
                   } else {
                     formattedDate = new Intl.DateTimeFormat('zh-CN', { 
                       month: 'long', 
