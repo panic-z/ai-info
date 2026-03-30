@@ -134,6 +134,22 @@
           "note": "RSS feed 不存在 (404)"
         }
       ]
+    },
+    {
+      "id": "podcast",
+      "name": "AI Podcast",
+      "description": "AI 领域优质播客节目",
+      "sources": [
+        {
+          "id": "lex-fridman",
+          "name": "Lex Fridman Podcast",
+          "type": "rss",
+          "url": "https://lexfridman.com/feed/podcast/",
+          "homepage": "https://lexfridman.com/podcast",
+          "enabled": true,
+          "fetchInterval": 86400
+        }
+      ]
     }
   ]
 }
