@@ -5,7 +5,7 @@ import { TrendingUp } from 'lucide-react';
 import { formatTime } from '@/utils/formatTime';
 
 type TimePeriod = 'today' | 'thisWeek' | 'thisMonth';
-type CategoryFilter = 'all' | 'news' | 'research' | 'tech';
+type CategoryFilter = 'all' | 'news' | 'research' | 'tech' | 'podcast';
 
 interface HeaderProps {
   lastUpdated?: string;
@@ -23,6 +23,7 @@ interface HeaderProps {
     news: number;
     research: number;
     tech: number;
+    podcast: number;
   };
 }
 
@@ -84,6 +85,7 @@ export default function Header({
     { id: 'news' as CategoryFilter, label: '新闻' },
     { id: 'research' as CategoryFilter, label: '研究' },
     { id: 'tech' as CategoryFilter, label: '技术' },
+    { id: 'podcast' as CategoryFilter, label: 'Podcast' },
   ];
 
   return (
