@@ -10,6 +10,9 @@ export interface Article {
   categoryId: string;
   fetchedAt: string;
   timeRange?: 'daily' | 'weekly' | 'monthly'; // For GitHub Trending
+  audioUrl?: string;      // Podcast: audio file URL from RSS <enclosure>
+  duration?: string;      // Podcast: episode duration, e.g. "1:23:45"
+  episodeNumber?: number; // Podcast: episode number from itunes:episode
 }
 
 export interface SourceConfig {
