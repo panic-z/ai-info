@@ -49,8 +49,12 @@ export async function fetchRSS(source: SourceConfig): Promise<Article[]> {
       categoryId: '',
       fetchedAt,
       audioUrl: item.enclosure?.url,
-      duration: item.itunesDuration,
-      episodeNumber: item.itunesEpisode ? Number(item.itunesEpisode) : undefined,
+      duration: item.itunes?.duration ?? item.itunesDuration,
+      episodeNumber: item.itunes?.episode != null
+        ? Number(item.itunes.episode)
+        : item.itunesEpisode != null
+        ? Number(item.itunesEpisode)
+        : undefined,
     }));
   } catch (error) {
     logger.error({ sourceId: source.id, error }, 'Failed to fetch RSS');
