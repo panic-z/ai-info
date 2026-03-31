@@ -37,7 +37,7 @@ export async function fetchRSS(source: SourceConfig): Promise<Article[]> {
     const feed = await parser.parseString(response.data);
     const fetchedAt = new Date().toISOString();
     
-    return (feed.items || []).slice(0, 100).map((item: any) => ({
+    return (feed.items || []).slice(0, 15).map((item: any) => ({
       id: generateArticleId(source.id, item.link || '', item.title || ''),
       title: item.title || 'Untitled',
       summary: item.contentSnippet || item.content?.replace(/<[^>]*>/g, '').substring(0, 200),
