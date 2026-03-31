@@ -63,7 +63,7 @@ npm run dev:web
 # 访问 http://localhost:3000
 ```
 
-## 开发
+## 快速开始
 
 ```bash
 # 开发模式（同时监听前端热更新）
@@ -71,6 +71,12 @@ npm run dev:web
 
 # 单独调试抓取逻辑
 npm run dev:fetch
+
+# 启动前端（端口 80）
+make start
+
+# 执行抓取
+make fetch
 
 # 单元测试
 cd web && npm test

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { FetchResult, ErrorLog, AggregatedData, CategoryData } from '../../../shared/types';
 
-const dataDir = path.join(__dirname, '../../data');
+const dataDir = path.join(process.cwd(), 'data');
 
 async function ensureDataDir(): Promise<void> {
   try {

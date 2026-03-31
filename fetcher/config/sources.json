@@ -34,13 +34,12 @@
         },
         {
           "id": "meta-ai",
-          "name": "Meta AI",
+          "name": "Meta AI Research",
           "type": "rss",
-          "url": "https://ai.meta.com/blog/rss.xml",
-          "homepage": "https://ai.meta.com/blog",
-          "enabled": false,
-          "fetchInterval": 3600,
-          "note": "RSS feed 超时（可能有地域限制或防火墙）"
+          "url": "https://engineering.fb.com/category/ai-research/feed/",
+          "homepage": "https://engineering.fb.com/category/ai-research/",
+          "enabled": true,
+          "fetchInterval": 3600
         },
         {
           "id": "microsoft-ai",
@@ -48,6 +47,15 @@
           "type": "rss",
           "url": "https://blogs.microsoft.com/ai/feed/",
           "homepage": "https://blogs.microsoft.com/ai",
+          "enabled": true,
+          "fetchInterval": 3600
+        },
+        {
+          "id": "google-ai",
+          "name": "Google AI Blog",
+          "type": "rss",
+          "url": "https://blog.google/technology/ai/rss/",
+          "homepage": "https://blog.google/technology/ai/",
           "enabled": true,
           "fetchInterval": 3600
         }
@@ -66,27 +74,25 @@
           "homepage": "https://openai.com/research",
           "enabled": false,
           "fetchInterval": 3600,
-          "note": "RSS feed 不存在 (404)"
+          "note": "OpenAI 无独立研究 RSS，通用新闻 feed 已由 openai 源覆盖"
         },
         {
           "id": "anthropic-research",
           "name": "Anthropic Research",
           "type": "rss",
-          "url": "https://www.anthropic.com/research/rss.xml",
+          "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_research.xml",
           "homepage": "https://www.anthropic.com/research",
-          "enabled": false,
-          "fetchInterval": 3600,
-          "note": "RSS feed 不存在 (404)"
+          "enabled": true,
+          "fetchInterval": 3600
         },
         {
           "id": "deepmind-research",
           "name": "DeepMind Research",
           "type": "rss",
-          "url": "https://deepmind.google/discover/blog/rss.xml",
-          "homepage": "https://deepmind.google/discover/blog",
-          "enabled": false,
-          "fetchInterval": 3600,
-          "note": "RSS feed 不存在 (404)"
+          "url": "https://deepmind.google/blog/rss.xml",
+          "homepage": "https://deepmind.google/blog",
+          "enabled": true,
+          "fetchInterval": 3600
         }
       ]
     },
@@ -121,23 +127,49 @@
           "homepage": "https://openai.com/blog/tags/engineering",
           "enabled": false,
           "fetchInterval": 3600,
-          "note": "RSS feed 被拒绝访问 (403)"
+          "note": "OpenAI 无标签过滤 RSS，通用新闻 feed 已由 openai 源覆盖"
         },
         {
           "id": "anthropic-engineering",
           "name": "Anthropic Engineering",
           "type": "rss",
-          "url": "https://www.anthropic.com/news/tag/engineering/rss.xml",
+          "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_engineering.xml",
           "homepage": "https://www.anthropic.com/news",
-          "enabled": false,
-          "fetchInterval": 3600,
-          "note": "RSS feed 不存在 (404)"
+          "enabled": true,
+          "fetchInterval": 3600
+        },
+        {
+          "id": "meta-engineering",
+          "name": "Meta Engineering",
+          "type": "rss",
+          "url": "https://engineering.fb.com/feed/",
+          "homepage": "https://engineering.fb.com",
+          "enabled": true,
+          "fetchInterval": 3600
+        },
+        {
+          "id": "google-research",
+          "name": "Google Research Blog",
+          "type": "rss",
+          "url": "https://research.google/blog/rss_feed.xml",
+          "homepage": "https://research.google/blog/",
+          "enabled": true,
+          "fetchInterval": 3600
+        },
+        {
+          "id": "aws-ml",
+          "name": "AWS Machine Learning Blog",
+          "type": "rss",
+          "url": "https://aws.amazon.com/blogs/machine-learning/feed/",
+          "homepage": "https://aws.amazon.com/blogs/machine-learning/",
+          "enabled": true,
+          "fetchInterval": 3600
         }
       ]
     },
     {
       "id": "podcast",
-      "name": "AI Podcast",
+      "name": "自媒体",
       "description": "AI 领域优质播客节目",
       "sources": [
         {

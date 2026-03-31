@@ -3,8 +3,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { AggregatedData } from '@shared/types';
 
-const DATA_FILE_PATH = process.env.DATA_FILE_PATH || 
-  path.join(process.cwd(), '../fetcher/data/index.json');
+const DATA_FILE_PATH = process.env.DATA_FILE_PATH || (() => {
+  const cwd = process.cwd();
+  // Support running from project root (`next dev web`) or from web/ dir (`next dev`)
+  const base = cwd.endsWith('/web') ? path.join(cwd, '..') : cwd;
+  return path.join(base, 'fetcher/data/index.json');
+})();
 
 export async function GET() {
   try {

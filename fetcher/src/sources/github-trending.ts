@@ -64,7 +64,7 @@ export async function fetchGitHubTrending(source: SourceConfig): Promise<Article
       }
     }
     
-    return allArticles.slice(0, 100);
+    return allArticles;
   } catch (error) {
     logger.error({ sourceId: source.id, error }, 'Failed to fetch GitHub Trending');
     throw error;
