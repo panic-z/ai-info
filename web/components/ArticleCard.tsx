@@ -41,11 +41,23 @@ export default function ArticleCard({ article, isRead, onMarkRead }: ArticleCard
       className="group grid grid-cols-[140px_1fr_2fr] gap-4 py-3 px-4 border-b border-[hsl(var(--border))] last:border-b-0 hover:bg-[hsl(var(--accent))]/30 transition-colors"
     >
       {/* Date Column */}
-      <div className="flex items-center gap-2 text-sm text-[hsl(var(--muted-foreground))]">
-        {!isRead && (
-          <span className="inline-flex flex-shrink-0 rounded-full h-1.5 w-1.5 bg-blue-500" />
+      <div className="flex flex-col justify-center gap-0.5 text-sm text-[hsl(var(--muted-foreground))]">
+        <div className="flex items-center gap-2">
+          {!isRead && (
+            <span className="inline-flex flex-shrink-0 rounded-full h-1.5 w-1.5 bg-blue-500" />
+          )}
+          <span>{formattedDate}</span>
+        </div>
+        {(article.episodeNumber !== undefined || article.duration) && (
+          <div className="flex items-center gap-1.5 text-xs pl-3.5">
+            {article.episodeNumber !== undefined && (
+              <span>EP.{article.episodeNumber}</span>
+            )}
+            {article.duration && (
+              <span>🎙 {article.duration}</span>
+            )}
+          </div>
         )}
-        <span>{formattedDate}</span>
       </div>
 
       {/* Title Column with hover tooltip */}
