@@ -45,7 +45,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [readArticleIds, setReadArticleIds] = useState<Set<string>>(new Set());
   const [activeTimePeriod, setActiveTimePeriod] = useState<'today' | 'thisWeek' | 'thisMonth'>('today');
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'news' | 'research' | 'tech'>('all');
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'news' | 'research' | 'tech' | 'podcast'>('all');
 
   useEffect(() => {
     try {
@@ -163,8 +163,8 @@ export default function Home() {
 
   // Calculate category filter counts for current time period
   const categoryFilterCounts = useMemo(() => {
-    if (!groupedData) return { all: 0, news: 0, research: 0, tech: 0 };
-    
+    if (!groupedData) return { all: 0, news: 0, research: 0, tech: 0, podcast: 0 };
+
     const sources = groupedData[activeTimePeriod] || [];
     const allCount = sources.reduce((sum, source) => sum + source.items.length, 0);
     const newsCount = sources
@@ -176,25 +176,29 @@ export default function Home() {
     const techCount = sources
       .filter(s => s.categoryId === 'tech')
       .reduce((sum, source) => sum + source.items.length, 0);
-    
+    const podcastCount = sources
+      .filter(s => s.categoryId === 'podcast')
+      .reduce((sum, source) => sum + source.items.length, 0);
+
     return {
       all: allCount,
       news: newsCount,
       research: researchCount,
       tech: techCount,
+      podcast: podcastCount,
     };
   }, [groupedData, activeTimePeriod]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-[hsl(var(--background))]">
-        <Header 
+        <Header
           activeTimePeriod={activeTimePeriod}
           onTimePeriodChange={setActiveTimePeriod}
           timePeriodCounts={{ today: 0, thisWeek: 0, thisMonth: 0 }}
           activeCategoryFilter={activeCategoryFilter}
           onCategoryFilterChange={setActiveCategoryFilter}
-          categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0 }}
+          categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0, podcast: 0 }}
         />
         <main className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
@@ -209,13 +213,13 @@ export default function Home() {
   if (error || !data) {
     return (
       <div className="min-h-screen bg-[hsl(var(--background))]">
-        <Header 
+        <Header
           activeTimePeriod={activeTimePeriod}
           onTimePeriodChange={setActiveTimePeriod}
           timePeriodCounts={{ today: 0, thisWeek: 0, thisMonth: 0 }}
           activeCategoryFilter={activeCategoryFilter}
           onCategoryFilterChange={setActiveCategoryFilter}
-          categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0 }}
+          categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0, podcast: 0 }}
         />
         <main className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">

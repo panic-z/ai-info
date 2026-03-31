@@ -7,7 +7,11 @@ import { logger } from '../core/logger';
 const parser = new Parser({
   timeout: 30000,
   customFields: {
-    item: ['contentSnippet', 'content']
+    item: [
+      'contentSnippet', 'content',
+      ['itunes:duration', 'itunesDuration'],
+      ['itunes:episode', 'itunesEpisode'],
+    ]
   }
 });
 
@@ -43,7 +47,14 @@ export async function fetchRSS(source: SourceConfig): Promise<Article[]> {
       sourceId: source.id,
       sourceName: source.name,
       categoryId: '',
-      fetchedAt
+      fetchedAt,
+      audioUrl: item.enclosure?.url,
+      duration: item.itunes?.duration ?? item.itunesDuration,
+      episodeNumber: item.itunes?.episode != null
+        ? Number(item.itunes.episode)
+        : item.itunesEpisode != null
+        ? Number(item.itunesEpisode)
+        : undefined,
     }));
   } catch (error) {
     logger.error({ sourceId: source.id, error }, 'Failed to fetch RSS');
