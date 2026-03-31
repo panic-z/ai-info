@@ -88,26 +88,27 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-b from-[hsl(var(--background))] to-[hsl(var(--background))]/95 backdrop-blur-xl border-b border-[hsl(var(--border))]/30 transition-all duration-300">
-      <div 
-        className="max-w-6xl mx-auto px-8 transition-all duration-200"
+      <div
+        className="max-w-6xl mx-auto px-4 sm:px-8 transition-all duration-200"
         style={{
           paddingTop: '1rem',
           paddingBottom: isFiltersVisible ? '1rem' : '0.5rem'
         }}
       >
         {/* Top bar - 减少上下 padding */}
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-[hsl(var(--foreground))] to-[hsl(var(--foreground))]/70 bg-clip-text text-transparent">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-[hsl(var(--foreground))] to-[hsl(var(--foreground))]/70 bg-clip-text text-transparent whitespace-nowrap">
               AI Info
             </h1>
-            <p className="text-sm text-[hsl(var(--muted-foreground))]">
+            <p className="text-xs sm:text-sm text-[hsl(var(--muted-foreground))] hidden sm:block">
               缓解你的AI信息fomo
             </p>
           </div>
-          <p className="text-xs text-[hsl(var(--muted-foreground))] flex items-center gap-1.5">
+          <p className="text-xs text-[hsl(var(--muted-foreground))] flex items-center gap-1.5 flex-shrink-0" suppressHydrationWarning>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500" />
-            更新于 {formatTime(lastUpdated)}
+            <span className="hidden sm:inline" suppressHydrationWarning>更新于</span>{' '}
+            <span suppressHydrationWarning>{formatTime(lastUpdated)}</span>
           </p>
         </div>
 
@@ -122,7 +123,7 @@ export default function Header({
           }}
         >
           {/* Time period filters */}
-          <div className="flex items-center gap-1.5 pb-2 mb-2 border-b border-[hsl(var(--border))]/30">
+          <div className="flex items-center gap-1.5 pb-2 mb-2 border-b border-[hsl(var(--border))]/30 flex-wrap">
           <span className="text-xs font-medium text-[hsl(var(--muted-foreground))] mr-1.5">时间:</span>
           {timePeriods.map((period) => {
             const isActive = activeTimePeriod === period.id;
@@ -157,7 +158,7 @@ export default function Header({
         </div>
 
         {/* Category filter pills */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-xs font-medium text-[hsl(var(--muted-foreground))] mr-1.5">筛选:</span>
           {categoryFilters.map((filter) => {
             const isActive = activeCategoryFilter === filter.id;

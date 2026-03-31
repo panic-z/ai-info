@@ -8,14 +8,24 @@ AI 消息汇集网站 - 聚合多个高质量 AI 信息源
 - `fetcher/` - 信息抓取服务
 - `shared/` - 共享类型定义
 
-## 开发
+## 快速开始
 
 ```bash
 # 安装所有依赖
 npm run install:all
 
+# 启动前端（端口 80）
+make start
+
+# 执行抓取
+make fetch
+```
+
+## 开发
+
+```bash
 # 开发模式
-npm run dev:web     # 启动前端
+npm run dev:web     # 启动前端（默认端口 3000）
 npm run dev:fetch   # 测试抓取
 
 # 生产

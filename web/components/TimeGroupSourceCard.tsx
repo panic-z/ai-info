@@ -57,7 +57,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
       <div className="flex items-center hover:bg-[hsl(var(--accent))]/10 transition-colors">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-3 flex-1 min-w-0 p-4 text-left"
+          className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 p-3 sm:p-4 text-left"
         >
           {/* Expand/Collapse Icon */}
           <div className="flex-shrink-0">
@@ -71,7 +71,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
           {/* Source Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-medium text-[hsl(var(--foreground))]">
+              <h3 className="text-base sm:text-lg font-medium text-[hsl(var(--foreground))]">
                 {source.sourceName}
               </h3>
               {/* Category Badge */}
@@ -104,11 +104,11 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
             href={source.homepage}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 mr-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] transition-colors border border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]/30"
+            className="flex-shrink-0 mr-3 sm:mr-4 inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] hover:bg-[hsl(var(--accent))] transition-colors border border-[hsl(var(--border))] hover:border-[hsl(var(--primary))]/30"
             title={`访问 ${source.sourceName}`}
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>访问源</span>
+            <span className="hidden sm:inline">访问源</span>
           </a>
         )}
       </div>
@@ -150,24 +150,19 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => onMarkRead(article.id)}
-                  className="group block p-3 rounded-lg hover:bg-[hsl(var(--accent))]/30 transition-colors border border-transparent hover:border-[hsl(var(--border))]"
+                  className="group block p-2 sm:p-3 rounded-lg hover:bg-[hsl(var(--accent))]/30 transition-colors border border-transparent hover:border-[hsl(var(--border))]"
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Unread indicator + Date */}
-                    <div className="flex items-center gap-2 min-w-[100px] flex-shrink-0">
-                      {!isRead && (
-                        <span className="inline-flex flex-shrink-0 rounded-full h-1.5 w-1.5 bg-blue-500" />
-                      )}
-                      <span className="text-xs text-[hsl(var(--muted-foreground))]">
-                        {formattedDate}
-                      </span>
-                    </div>
-                    
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    {/* Unread indicator */}
+                    {!isRead && (
+                      <span className="inline-flex flex-shrink-0 rounded-full h-1.5 w-1.5 bg-blue-500 mt-1.5" />
+                    )}
+
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <h4 className={`text-sm font-medium leading-snug mb-1 transition-colors ${
-                        isRead 
-                          ? 'text-[hsl(var(--muted-foreground))]' 
+                        isRead
+                          ? 'text-[hsl(var(--muted-foreground))]'
                           : 'text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))]'
                       }`}>
                         {article.title}
@@ -177,6 +172,9 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
                           {article.summary}
                         </p>
                       )}
+                      <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1 inline-block" suppressHydrationWarning>
+                        {formattedDate}
+                      </span>
                     </div>
                   </div>
                 </a>

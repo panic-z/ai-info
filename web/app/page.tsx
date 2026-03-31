@@ -196,7 +196,7 @@ export default function Home() {
           onCategoryFilterChange={setActiveCategoryFilter}
           categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0 }}
         />
-        <main className="max-w-6xl mx-auto px-8 py-16">
+        <main className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
             <Loader2 className="w-8 h-8 text-[hsl(var(--primary))] animate-spin" />
             <p className="text-[hsl(var(--muted-foreground))] font-medium">加载中...</p>
@@ -217,7 +217,7 @@ export default function Home() {
           onCategoryFilterChange={setActiveCategoryFilter}
           categoryFilterCounts={{ all: 0, news: 0, research: 0, tech: 0 }}
         />
-        <main className="max-w-6xl mx-auto px-8 py-16">
+        <main className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
             <div className="w-16 h-16 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
               <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -250,7 +250,7 @@ export default function Home() {
         onCategoryFilterChange={setActiveCategoryFilter}
         categoryFilterCounts={categoryFilterCounts}
       />
-      <main className="max-w-[1600px] mx-auto px-8 py-4">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-8 py-4">
         {currentSources.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
             {/* Left column */}
