@@ -32,6 +32,7 @@ export async function fetchGitHubTrending(source: SourceConfig): Promise<Article
         const fetchedAt = new Date().toISOString();
         
         $('article.Box-row').each((index, element) => {
+          if (index >= 10) return false;
           const $el = $(element);
           const link = $el.find('h2 a').attr('href');
           const title = $el.find('h2 a').text().trim().replace(/\s+/g, ' ');

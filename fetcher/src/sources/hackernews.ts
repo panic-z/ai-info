@@ -12,7 +12,7 @@ export async function fetchHackerNews(source: SourceConfig): Promise<Article[]> 
     const topStoriesRes = await axios.get(`${HN_API_BASE}/topstories.json`, {
       timeout: 10000
     });
-    const topStoryIds = topStoriesRes.data.slice(0, 15);
+    const topStoryIds = topStoriesRes.data.slice(0, 10);
     
     const fetchedAt = new Date().toISOString();
     

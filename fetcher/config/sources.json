@@ -17,8 +17,8 @@
         {
           "id": "anthropic",
           "name": "Anthropic News",
-          "type": "rss",
-          "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml",
+          "type": "scraper",
+          "url": "https://www.anthropic.com/news",
           "homepage": "https://www.anthropic.com/news",
           "enabled": true,
           "fetchInterval": 3600
@@ -69,18 +69,17 @@
         {
           "id": "openai-research",
           "name": "OpenAI Research",
-          "type": "rss",
-          "url": "https://openai.com/research/rss.xml",
+          "type": "scraper",
+          "url": "https://openai.com/sitemap.xml/research/",
           "homepage": "https://openai.com/research",
-          "enabled": false,
-          "fetchInterval": 3600,
-          "note": "OpenAI 无独立研究 RSS，通用新闻 feed 已由 openai 源覆盖"
+          "enabled": true,
+          "fetchInterval": 3600
         },
         {
           "id": "anthropic-research",
           "name": "Anthropic Research",
-          "type": "rss",
-          "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_research.xml",
+          "type": "scraper",
+          "url": "https://www.anthropic.com/research",
           "homepage": "https://www.anthropic.com/research",
           "enabled": true,
           "fetchInterval": 3600
@@ -132,9 +131,9 @@
         {
           "id": "anthropic-engineering",
           "name": "Anthropic Engineering",
-          "type": "rss",
-          "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_engineering.xml",
-          "homepage": "https://www.anthropic.com/news",
+          "type": "scraper",
+          "url": "https://www.anthropic.com/engineering",
+          "homepage": "https://www.anthropic.com/engineering",
           "enabled": true,
           "fetchInterval": 3600
         },
@@ -151,7 +150,7 @@
           "id": "google-research",
           "name": "Google Research Blog",
           "type": "rss",
-          "url": "https://research.google/blog/rss_feed.xml",
+          "url": "https://research.google/blog/rss/",
           "homepage": "https://research.google/blog/",
           "enabled": true,
           "fetchInterval": 3600
