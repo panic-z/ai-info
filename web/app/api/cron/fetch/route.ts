@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { runFetcher } from 'ai-info-fetcher';
 
+export const maxDuration = 300;
+
 function isValidToken(provided: string | null, expected: string): boolean {
   if (!provided) return false;
   try {
