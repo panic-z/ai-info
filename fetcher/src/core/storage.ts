@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import type { FetchResult, ErrorLog, AggregatedData, CategoryData } from '../../../shared/types';
+import sourcesConfig from '../../config/sources.json';
 
 const dataDir = process.env.FETCHER_DATA_DIR ?? path.join(__dirname, '../../data');
 
@@ -63,11 +64,9 @@ export async function buildAggregatedData(): Promise<AggregatedData> {
     }
   }
 
-  // Load config asynchronously to get category metadata
+  // Load config to get category metadata
   try {
-    const configPath = path.join(__dirname, '../../config/sources.json');
-    const configContent = await fs.readFile(configPath, 'utf-8');
-    const config = JSON.parse(configContent);
+    const config = sourcesConfig;
     
     const categoryMetadata = new Map<string, { name: string; description?: string }>(
       config.categories.map((cat: { id: string; name: string; description?: string }) => 
