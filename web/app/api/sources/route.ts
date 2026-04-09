@@ -4,12 +4,14 @@ import path from 'path';
 import type { AggregatedData } from '@shared/types';
 
 async function readFromBlob(): Promise<AggregatedData> {
-  const { list, download } = await import('@vercel/blob');
+  const { list } = await import('@vercel/blob');
   const { blobs } = await list({ prefix: 'ai-info/index.json', limit: 1 });
   if (blobs.length === 0) {
     throw new Error('Blob not found — run /api/cron/fetch to seed data');
   }
-  const response = await download(blobs[0].url);
+  const response = await fetch(blobs[0].url, {
+    headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+  });
   if (!response.ok) throw new Error(`Blob fetch failed: ${response.status}`);
   return response.json() as Promise<AggregatedData>;
 }
