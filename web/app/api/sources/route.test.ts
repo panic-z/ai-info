@@ -1,14 +1,17 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 
 vi.mock('@vercel/blob', () => ({
   list: vi.fn(),
 }));
+
+vi.mock('fs/promises');
 
 describe('GET /api/sources', () => {
   const originalEnv = { ...process.env };
 
   afterEach(() => {
     process.env = { ...originalEnv };
+    vi.resetModules();
     vi.resetAllMocks();
   });
 
@@ -51,5 +54,28 @@ describe('GET /api/sources', () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data).toEqual(mockData);
+  });
+
+  it('reads from local file when BLOB_STORE is not set', async () => {
+    const mockData = { categories: [], lastUpdated: '2026-04-09T00:00:00Z' };
+
+    const fs = await import('fs/promises');
+    vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(mockData));
+
+    const { GET } = await import('./route');
+    const response = await GET();
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data).toEqual(mockData);
+  });
+
+  it('returns 503 when local file not found', async () => {
+    const error = new Error('ENOENT: no such file or directory');
+    const fs = await import('fs/promises');
+    vi.mocked(fs.readFile).mockRejectedValue(error);
+
+    const { GET } = await import('./route');
+    const response = await GET();
+    expect(response.status).toBe(503);
   });
 });

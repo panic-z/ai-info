@@ -32,6 +32,7 @@ export async function GET() {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[api/sources] GET failed:', message);
     const isNotFound = message.includes('not found') || message.includes('ENOENT');
     return NextResponse.json(
       { error: isNotFound ? 'Data not available yet' : 'Failed to load data' },
