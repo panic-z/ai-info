@@ -123,10 +123,9 @@ export async function saveAggregatedData(data: AggregatedData): Promise<void> {
   if (process.env.BLOB_STORE === 'true') {
     const { put } = await import('@vercel/blob');
     await put('ai-info/index.json', JSON.stringify(data), {
-      access: 'public',
+      access: 'private',
       contentType: 'application/json',
       allowOverwrite: true,
-      cacheControlMaxAge: 86400, // 1 day — matches the daily cron schedule
     });
     return;
   }
