@@ -3,7 +3,7 @@ import path from 'path';
 import type { FetchResult, ErrorLog, AggregatedData, CategoryData } from '../../../shared/types';
 import sourcesConfig from '../../config/sources.json';
 
-const dataDir = process.env.FETCHER_DATA_DIR ?? path.join(__dirname, '../../data');
+const dataDir = process.env.FETCHER_DATA_DIR ?? path.join(process.cwd(), 'data');
 
 async function ensureDataDir(): Promise<void> {
   try {

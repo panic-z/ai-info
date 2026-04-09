@@ -30,14 +30,14 @@ export async function fetchRSS(source: SourceConfig): Promise<Article[]> {
     const response = await axios.get(source.url, {
       timeout: 30000,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; AI-Info-Hub/1.0)'
+        'User-Agent': 'feedparser/6.0 +https://github.com/kurtmckee/feedparser'
       }
     });
     
     const feed = await parser.parseString(response.data);
     const fetchedAt = new Date().toISOString();
     
-    return (feed.items || []).slice(0, 100).map((item: any) => ({
+    return (feed.items || []).slice(0, 10).map((item: any) => ({
       id: generateArticleId(source.id, item.link || '', item.title || ''),
       title: item.title || 'Untitled',
       summary: item.contentSnippet || item.content?.replace(/<[^>]*>/g, '').substring(0, 200),

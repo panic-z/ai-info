@@ -5,12 +5,19 @@ import { fetchRSS } from '../adapters/rss';
 import { fetchHackerNews } from '../sources/hackernews';
 import { fetchGitHubTrending } from '../sources/github-trending';
 import sourcesConfig from '../../config/sources.json';
+import { fetchAnthropicEngineering } from '../sources/anthropic-engineering';
+import { fetchAnthropicNews, fetchAnthropicResearch } from '../sources/anthropic-posts';
+import { fetchOpenAIResearch } from '../sources/openai-research';
 
 const CONCURRENCY_LIMIT = 5;
 
 const specialHandlers: Record<string, (source: SourceConfig) => Promise<Article[]>> = {
   'hackernews': fetchHackerNews,
-  'github-trending': fetchGitHubTrending
+  'github-trending': fetchGitHubTrending,
+  'anthropic-engineering': fetchAnthropicEngineering,
+  'anthropic': fetchAnthropicNews,
+  'anthropic-research': fetchAnthropicResearch,
+  'openai-research': fetchOpenAIResearch
 };
 
 async function fetchSource(source: SourceConfig, categoryId: string): Promise<FetchResult> {

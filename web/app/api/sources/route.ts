@@ -18,7 +18,11 @@ async function readFromBlob(): Promise<AggregatedData> {
 
 async function readFromFile(): Promise<AggregatedData> {
   const filePath = process.env.DATA_FILE_PATH ??
-    path.join(process.cwd(), '../fetcher/data/index.json');
+    (() => {
+      const cwd = process.cwd();
+      const base = cwd.endsWith('/web') ? path.join(cwd, '..') : cwd;
+      return path.join(base, 'fetcher/data/index.json');
+    })();
   const content = await fs.readFile(filePath, 'utf-8');
   return JSON.parse(content) as AggregatedData;
 }
