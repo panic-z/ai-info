@@ -59,5 +59,18 @@ describe('POST /api/cron/fetch', () => {
     });
     const response = await POST(request);
     expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.error).toBe('Fetch failed');
+  });
+
+  it('returns 401 when CRON_SECRET env var is not set', async () => {
+    delete process.env.CRON_SECRET;
+    const { POST } = await import('./route');
+    const request = new Request('http://localhost/api/cron/fetch', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer anything' },
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(401);
   });
 });
