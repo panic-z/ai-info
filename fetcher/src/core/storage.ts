@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { FetchResult, ErrorLog, AggregatedData, CategoryData } from '../../../shared/types';
 
-const dataDir = path.join(__dirname, '../../data');
+const dataDir = process.env.FETCHER_DATA_DIR ?? path.join(__dirname, '../../data');
 
 async function ensureDataDir(): Promise<void> {
   try {
@@ -121,6 +121,16 @@ export async function buildAggregatedData(): Promise<AggregatedData> {
 }
 
 export async function saveAggregatedData(data: AggregatedData): Promise<void> {
+  if (process.env.BLOB_STORE === 'true') {
+    const { put } = await import('@vercel/blob');
+    await put('ai-info/index.json', JSON.stringify(data), {
+      access: 'public',
+      contentType: 'application/json',
+      allowOverwrite: true,
+      cacheControlMaxAge: 86400, // 1 day — matches the daily cron schedule
+    });
+    return;
+  }
   await ensureDataDir();
   const filePath = path.join(dataDir, 'index.json');
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
