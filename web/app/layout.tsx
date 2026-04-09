@@ -67,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" className={`antialiased ${newsreader.variable} ${dmSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`antialiased ${newsreader.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-neutral-50 dark:bg-neutral-900" suppressHydrationWarning>
         <script
           type="application/ld+json"

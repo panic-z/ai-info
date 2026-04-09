@@ -16,7 +16,11 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [readArticleIds, setReadArticleIds] = useState<Set<string>>(new Set());
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'news' | 'research' | 'tech' | 'podcast'>('all');
-  const [lang, setLang] = useState<Lang>('zh');
+  const [lang, setLang] = useState<Lang>('en');
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  }, [lang]);
 
   useEffect(() => {
     try {
