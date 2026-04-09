@@ -1,8 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import type { FetchResult, ErrorLog, AggregatedData, CategoryData } from '../../../shared/types';
+import sourcesConfig from '../../config/sources.json';
 
-const dataDir = path.join(process.cwd(), 'data');
+const dataDir = process.env.FETCHER_DATA_DIR ?? path.join(process.cwd(), 'data');
 
 async function ensureDataDir(): Promise<void> {
   try {
@@ -63,11 +64,9 @@ export async function buildAggregatedData(): Promise<AggregatedData> {
     }
   }
 
-  // Load config asynchronously to get category metadata
+  // Load config to get category metadata
   try {
-    const configPath = path.join(__dirname, '../../config/sources.json');
-    const configContent = await fs.readFile(configPath, 'utf-8');
-    const config = JSON.parse(configContent);
+    const config = sourcesConfig;
     
     const categoryMetadata = new Map<string, { name: string; description?: string }>(
       config.categories.map((cat: { id: string; name: string; description?: string }) => 
@@ -121,6 +120,15 @@ export async function buildAggregatedData(): Promise<AggregatedData> {
 }
 
 export async function saveAggregatedData(data: AggregatedData): Promise<void> {
+  if (process.env.BLOB_STORE === 'true') {
+    const { put } = await import('@vercel/blob');
+    await put('ai-info/index.json', JSON.stringify(data), {
+      access: 'private',
+      contentType: 'application/json',
+      allowOverwrite: true,
+    });
+    return;
+  }
   await ensureDataDir();
   const filePath = path.join(dataDir, 'index.json');
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
