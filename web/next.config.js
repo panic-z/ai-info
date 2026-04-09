@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  transpilePackages: ['ai-info-fetcher'],
   async rewrites() {
     return [];
-  }
+  },
 };
 
 module.exports = nextConfig;

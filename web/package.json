@@ -12,6 +12,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@vercel/blob": "^2.3.0",
+    "ai-info-fetcher": "*",
     "date-fns": "^3.0.0",
     "lucide-react": "^0.460.0",
     "next": "15.1.0",
