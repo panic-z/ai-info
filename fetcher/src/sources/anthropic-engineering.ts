@@ -57,7 +57,7 @@ export async function fetchAnthropicEngineering(source: SourceConfig): Promise<A
 
   // Next.js App Router embeds RSC payloads as self.__next_f.push([1, "escaped-string"])
   // The string is RSC format: "id:json_value\n..." lines
-  const pushPattern = /self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/gs;
+  const pushPattern = /self\.__next_f\.push\(\[1,"((?:[^"\\]|\\[\s\S])*)"\]\)/g;
   const allArticles: EngineeringArticle[] = [];
 
   let match;
