@@ -58,7 +58,7 @@ async function fetchAnthropicPage(source: SourceConfig, basePath: string): Promi
   });
 
   const html: string = response.data;
-  const pushPattern = /self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/gs;
+  const pushPattern = /self\.__next_f\.push\(\[1,"((?:[^"\\]|\\[\s\S])*)"\]\)/g;
   const allPosts: SanityPost[] = [];
 
   let match;
