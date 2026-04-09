@@ -4,8 +4,7 @@ import { saveFetchResult, saveErrorLog, loadErrorLog, buildAggregatedData, saveA
 import { fetchRSS } from '../adapters/rss';
 import { fetchHackerNews } from '../sources/hackernews';
 import { fetchGitHubTrending } from '../sources/github-trending';
-import fs from 'fs/promises';
-import path from 'path';
+import sourcesConfig from '../../config/sources.json';
 
 const CONCURRENCY_LIMIT = 5;
 
@@ -84,11 +83,9 @@ export async function runFetcher(): Promise<void> {
   const startTime = Date.now();
   
   try {
-    // Load config asynchronously
-    const configPath = path.join(__dirname, '../../config/sources.json');
-    const configContent = await fs.readFile(configPath, 'utf-8');
-    const config: SourcesConfig = JSON.parse(configContent);
-    
+    // Load config from static import
+    const config = sourcesConfig as SourcesConfig;
+
     // Validate config structure
     if (!config.categories || !Array.isArray(config.categories)) {
       throw new Error('Invalid config: missing or invalid categories array');
