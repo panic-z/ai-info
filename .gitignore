@@ -35,3 +35,4 @@ Thumbs.db
 # Playwright test artifacts
 playwright-report/
 test-results/
+.vercel
