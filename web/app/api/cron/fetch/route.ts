@@ -13,7 +13,7 @@ function isValidToken(provided: string | null, expected: string): boolean {
   }
 }
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   const authHeader = request.headers.get('Authorization');
   const expectedToken = process.env.CRON_SECRET;
 
