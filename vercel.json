@@ -1,0 +1,12 @@
+{
+  "buildCommand": "npm run build:web",
+  "outputDirectory": "web/.next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/fetch",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}
