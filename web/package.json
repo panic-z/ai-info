@@ -12,6 +12,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "@vercel/blob": "^2.3.0",
     "ai-info-fetcher": "*",
     "date-fns": "^3.0.0",

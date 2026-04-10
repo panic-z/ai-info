@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import { Newsreader, DM_Sans } from 'next/font/google';
 import './globals.css';
 
@@ -89,6 +90,10 @@ export default function RootLayout({
           }}
         />
         {children}
+        <Analytics
+          scriptSrc="https://www.cybershiba.cn/_vercel/insights/script.js"
+          endpoint="https://www.cybershiba.cn/_vercel/insights"
+        />
       </body>
     </html>
   );
