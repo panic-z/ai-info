@@ -1,8 +1,7 @@
 'use client';
 
-import { format } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
 import type { Article } from '@shared/types';
+import { getArticleDisplayDate } from '@/utils/articleDate';
 
 interface ArticleCardProps {
   article: Article;
@@ -11,26 +10,7 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCard({ article, isRead, onMarkRead }: ArticleCardProps) {
-  // Format date as "Mar 12, 2026"
-  let formattedDate = '日期未知';
-  try {
-    const publishDate = new Date(article.publishedAt);
-    if (!isNaN(publishDate.getTime())) {
-      // For GitHub Trending, show time range label
-      if (article.sourceId === 'github-trending' && article.timeRange) {
-        const rangeLabels = {
-          'daily': '今日热门',
-          'weekly': '本周热门',
-          'monthly': '本月热门'
-        };
-        formattedDate = rangeLabels[article.timeRange];
-      } else {
-        formattedDate = format(publishDate, 'MMM d, yyyy', { locale: zhCN });
-      }
-    }
-  } catch (error) {
-    console.error('Failed to format article date:', error);
-  }
+  const formattedDate = getArticleDisplayDate(article, 'zh');
 
   return (
     <a

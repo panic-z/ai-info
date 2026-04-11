@@ -4,6 +4,7 @@ export interface Article {
   summary?: string;
   url: string;
   publishedAt: string;
+  publishedLabel?: string;
   author?: string;
   sourceId: string;
   sourceName: string;

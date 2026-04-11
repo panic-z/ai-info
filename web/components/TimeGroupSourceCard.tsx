@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import type { FetchResult, Article } from '@shared/types';
+import { getArticleDisplayDateShort } from '@/utils/articleDate';
 
 interface TimeGroupSourceCardProps {
   source: FetchResult;
@@ -159,19 +160,7 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
           <div className="p-3 space-y-2">
             {displayedArticles.map(article => {
               const isRead = readArticleIds.has(article.id);
-
-              let formattedDate = lang === 'zh' ? '日期未知' : 'Unknown date';
-              try {
-                const publishDate = new Date(article.publishedAt);
-                if (!isNaN(publishDate.getTime())) {
-                  formattedDate = new Intl.DateTimeFormat(lang === 'zh' ? 'zh-CN' : 'en-US', {
-                    month: 'long',
-                    day: 'numeric'
-                  }).format(publishDate);
-                }
-              } catch (error) {
-                console.error('Failed to format article date:', error);
-              }
+              const formattedDate = getArticleDisplayDateShort(article, lang);
 
               return (
                 <a
