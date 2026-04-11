@@ -112,6 +112,7 @@ export async function fetchAnthropicEngineering(source: SourceConfig): Promise<A
       summary: raw.summary ?? undefined,
       url,
       publishedAt,
+      publishedLabel: raw.publishedOn ?? undefined,
       sourceId: source.id,
       sourceName: source.name,
       categoryId: '',

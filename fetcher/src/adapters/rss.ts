@@ -43,6 +43,7 @@ export async function fetchRSS(source: SourceConfig): Promise<Article[]> {
       summary: item.contentSnippet || item.content?.replace(/<[^>]*>/g, '').substring(0, 200),
       url: item.link || '',
       publishedAt: item.isoDate || item.pubDate || fetchedAt,
+      publishedLabel: typeof item.pubDate === 'string' ? item.pubDate : undefined,
       author: item.creator || item.author,
       sourceId: source.id,
       sourceName: source.name,

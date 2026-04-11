@@ -42,12 +42,21 @@ export const metadata: Metadata = {
     description:
       'A curated AI information hub covering research, engineering, and product updates from leading labs and companies.',
     locale: 'en_US',
+    images: [
+      {
+        url: '/ai-info/og-cover.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AI Info by CyberShiba',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI Info | Curated AI News and Research Updates',
     description:
       'Follow curated AI news and research updates from OpenAI, Anthropic, Google DeepMind, and more.',
+    images: ['/ai-info/og-cover.svg'],
   },
   robots: {
     index: true,
@@ -86,6 +95,7 @@ export default function RootLayout({
                 url: 'https://www.cybershiba.cn',
               },
               inLanguage: ['en', 'zh-CN'],
+              image: 'https://www.cybershiba.cn/ai-info/og-cover.svg',
             }),
           }}
         />

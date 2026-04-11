@@ -1,37 +1,9 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-import type { AggregatedData } from '@shared/types';
-
-async function readFromBlob(): Promise<AggregatedData> {
-  const { list } = await import('@vercel/blob');
-  const { blobs } = await list({ prefix: 'ai-info/index.json', limit: 1 });
-  if (blobs.length === 0) {
-    throw new Error('Blob not found — run /api/cron/fetch to seed data');
-  }
-  const response = await fetch(blobs[0].url, {
-    headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
-  });
-  if (!response.ok) throw new Error(`Blob fetch failed: ${response.status}`);
-  return response.json() as Promise<AggregatedData>;
-}
-
-async function readFromFile(): Promise<AggregatedData> {
-  const filePath = process.env.DATA_FILE_PATH ??
-    (() => {
-      const cwd = process.cwd();
-      const base = cwd.endsWith('/web') ? path.join(cwd, '..') : cwd;
-      return path.join(base, 'fetcher/data/index.json');
-    })();
-  const content = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(content) as AggregatedData;
-}
+import { readSourcesData } from '@/lib/source-data';
 
 export async function GET() {
   try {
-    const data = process.env.BLOB_STORE === 'true'
-      ? await readFromBlob()
-      : await readFromFile();
+    const data = await readSourcesData();
 
     return NextResponse.json(data, {
       headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },

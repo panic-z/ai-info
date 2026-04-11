@@ -38,6 +38,7 @@ describe('GET /api/sources', () => {
         downloadUrl: 'https://example.com/ai-info/index.json',
         pathname: 'ai-info/index.json',
         size: 100,
+        etag: 'blob-etag',
         uploadedAt: new Date(),
       }],
       cursor: undefined,

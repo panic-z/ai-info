@@ -62,6 +62,7 @@ export async function fetchOpenAIResearch(source: SourceConfig): Promise<Article
       title,
       url,
       publishedAt,
+      publishedLabel: lastmod,
       sourceId: source.id,
       sourceName: source.name,
       categoryId: '',

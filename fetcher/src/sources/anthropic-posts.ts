@@ -112,6 +112,7 @@ async function fetchAnthropicPage(source: SourceConfig, basePath: string): Promi
       summary: raw.summary ?? undefined,
       url,
       publishedAt,
+      publishedLabel: raw.publishedOn ?? undefined,
       sourceId: source.id,
       sourceName: source.name,
       categoryId: '',

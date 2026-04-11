@@ -1,0 +1,17 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="40" fill="#F5F7FB"/>
+  <rect x="38" y="38" width="1124" height="554" rx="28" fill="#FFFFFF" stroke="#D7E3FF"/>
+  <rect x="88" y="132" width="310" height="94" rx="24" fill="#E0EAFF"/>
+  <rect x="88" y="252" width="310" height="94" rx="24" fill="#E8F3FF"/>
+  <rect x="88" y="372" width="310" height="94" rx="24" fill="#EEF2FF"/>
+  <text x="88" y="96" fill="#2563EB" font-family="Arial, sans-serif" font-size="26" font-weight="700">AI INFO</text>
+  <text x="122" y="188" fill="#0F172A" font-family="Arial, sans-serif" font-size="28" font-weight="700">News</text>
+  <text x="122" y="308" fill="#0F172A" font-family="Arial, sans-serif" font-size="28" font-weight="700">Research</text>
+  <text x="122" y="428" fill="#0F172A" font-family="Arial, sans-serif" font-size="28" font-weight="700">Engineering</text>
+  <text x="462" y="196" fill="#0F172A" font-family="Arial, sans-serif" font-size="62" font-weight="700">Curated AI updates.</text>
+  <text x="462" y="278" fill="#0F172A" font-family="Arial, sans-serif" font-size="62" font-weight="700">Research, products,</text>
+  <text x="462" y="360" fill="#0F172A" font-family="Arial, sans-serif" font-size="62" font-weight="700">and engineering.</text>
+  <text x="462" y="438" fill="#475569" font-family="Arial, sans-serif" font-size="28">A crawlable AI news hub from CyberShiba.</text>
+  <rect x="462" y="468" width="246" height="62" rx="18" fill="#2563EB"/>
+  <text x="502" y="508" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="28" font-weight="700">cybershiba.cn</text>
+</svg>
