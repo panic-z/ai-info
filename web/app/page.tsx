@@ -1,6 +1,8 @@
 import HomeClient from '@/components/HomeClient';
 import { readSourcesData } from '@/lib/source-data';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   try {
     const initialData = await readSourcesData();

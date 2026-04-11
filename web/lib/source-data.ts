@@ -9,9 +9,15 @@ async function readFromBlob(): Promise<AggregatedData> {
     throw new Error('Blob not found — run /api/cron/fetch to seed data');
   }
 
-  const response = await fetch(blobs[0].url, {
-    headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
-  });
+  const blob = blobs[0];
+  const blobUrl = blob.downloadUrl || blob.url;
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  const response = await fetch(
+    blobUrl,
+    token && blobUrl === blob.url
+      ? { headers: { Authorization: `Bearer ${token}` } }
+      : undefined,
+  );
 
   if (!response.ok) {
     throw new Error(`Blob fetch failed: ${response.status}`);
