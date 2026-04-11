@@ -4,7 +4,12 @@
 
 ## 简介
 
-AI Info Hub 是一个信息聚合工具，将 HackerNews、GitHub Trending、RSS 订阅等多个渠道的 AI 相关内容统一抓取、分类，并通过 Web 界面展示。项目分为独立运行的抓取服务（fetcher）和展示前端（web），数据通过本地 JSON 文件传递。
+AI Info Hub 是一个 AI 信息聚合工具，将 HackerNews、GitHub Trending、RSS 订阅以及定制抓取源的内容统一抓取、分类，并通过 Web 界面展示。项目分为两个主要部分：
+
+- `fetcher` 负责抓取、清洗、聚合数据
+- `web` 负责在 Next.js App Router 中服务端读取数据并渲染页面
+
+本地开发默认通过 `fetcher/data/index.json` 传递数据；Vercel 预发和生产环境通过 Blob 读取聚合结果。
 
 ## 项目结构
 
@@ -21,11 +26,12 @@ ai-info/
 | 路径 | 说明 |
 |------|------|
 | `app/page.tsx` | 主页，按时间段展示文章 |
-| `app/api/sources/route.ts` | API 路由，读取 fetcher 产出的 JSON |
+| `app/api/sources/route.ts` | API 路由，返回当前聚合数据 |
+| `lib/source-data.ts` | 统一读取本地 JSON / Vercel Blob |
 | `components/ArticleCard.tsx` | 文章卡片组件 |
-| `components/CategoryCard.tsx` | 分类卡片组件 |
-| `components/TimeSection.tsx` | 时间段分组（今天 / 本周 / 本月）|
+| `components/TimeGroupSourceCard.tsx` | 按来源分组的时间视图卡片 |
 | `utils/timeUtils.ts` | 时间段判断工具 |
+| `utils/articleDate.ts` | 文章日期展示逻辑，优先显示来源发布日期文本 |
 
 ### fetcher — 抓取服务
 
@@ -36,20 +42,20 @@ ai-info/
 | `src/adapters/scraper.ts` | HTML 爬取 |
 | `src/sources/hackernews.ts` | HackerNews Top Stories（批量并发，每批 10 条）|
 | `src/sources/github-trending.ts` | GitHub Trending 爬取 |
-| `src/core/storage.ts` | 数据持久化（写入 `fetcher/data/index.json`）|
+| `src/core/storage.ts` | 数据持久化（写入 `fetcher/data/index.json` / 聚合输出）|
 
 ## 技术栈
 
 | 层 | 技术 |
 |----|------|
-| 前端 | Next.js 13+、React、TypeScript、Tailwind CSS |
+| 前端 | Next.js 15、React 19、TypeScript、Tailwind CSS |
 | 抓取 | Node.js、TypeScript、Axios、Cheerio、RSS Parser |
 | 日志 | Pino |
 | 测试 | Vitest（单元）、Playwright（E2E）|
 
 ## 快速上手
 
-**前置要求：** Node.js 18+
+**前置要求：** Node.js 18.18+，推荐 Node.js 22
 
 ```bash
 # 1. 安装依赖
@@ -85,6 +91,15 @@ cd web && npm test
 npm run test:e2e
 ```
 
+## 数据与日期规则
+
+- `publishedAt` 用于排序、筛选和时间范围判断
+- `publishedLabel` 用于展示文章来源自带的日期文本
+- UI 会优先显示 `publishedLabel`，只有缺失时才回退到 `publishedAt`
+- `github-trending` 这类没有自然发布日期的来源，仍显示“今日热门 / 本周热门 / 本月热门”
+
+这保证了页面看到的是文章来源本身的日期，而不是抓取任务执行时间。
+
 ## 生产部署
 
 ```bash
@@ -98,7 +113,10 @@ npm run build:web
 npm start
 ```
 
-前端通过 `DATA_FILE_PATH` 环境变量指定数据文件路径，默认为 `../fetcher/data/index.json`。
+前端通过以下方式读取数据：
+
+- 本地：`DATA_FILE_PATH` 指向聚合 JSON，默认 `../fetcher/data/index.json`
+- Vercel：设置 `BLOB_STORE=true` 后，从私有 Blob 读取 `ai-info/index.json`
 
 ## 数据流
 
@@ -107,9 +125,9 @@ npm start
         ↓
    fetcher（抓取、清洗、合并）
         ↓
-  fetcher/data/index.json
+ 本地 JSON 或 Vercel Blob
         ↓
- web API /api/sources（读取文件）
+ web（Server Component / API 读取）
         ↓
     浏览器（React 渲染）
 ```

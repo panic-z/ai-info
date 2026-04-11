@@ -4,7 +4,12 @@
 
 ## Overview
 
-AI Info Hub is an information aggregation tool that collects AI-related content from HackerNews, GitHub Trending, RSS feeds, and other channels, then displays it through a clean web interface. The project is split into two independently runnable services: a **fetcher** that scrapes and stores data, and a **web** frontend that reads and displays it. Data is passed via a local JSON file.
+AI Info Hub aggregates AI-related updates from HackerNews, GitHub Trending, RSS feeds, and custom scraping sources, then presents them in a single web UI. The project has two main parts:
+
+- `fetcher` collects, normalizes, and aggregates source data
+- `web` reads the aggregated data on the server and renders the UI with Next.js App Router
+
+Local development reads from `fetcher/data/index.json`. Preview and production deployments on Vercel read the aggregated payload from Blob storage.
 
 ## Project Structure
 
@@ -21,11 +26,12 @@ ai-info/
 | Path | Description |
 |------|-------------|
 | `app/page.tsx` | Homepage, articles grouped by time period |
-| `app/api/sources/route.ts` | API route that reads the fetcher's JSON output |
+| `app/api/sources/route.ts` | API route that returns the current aggregated payload |
+| `lib/source-data.ts` | Unified loader for local JSON and Vercel Blob data |
 | `components/ArticleCard.tsx` | Individual article card |
-| `components/CategoryCard.tsx` | Category grouping card |
-| `components/TimeSection.tsx` | Time period sections (today / this week / this month) |
+| `components/TimeGroupSourceCard.tsx` | Time-grouped source card view |
 | `utils/timeUtils.ts` | Time period detection utilities |
+| `utils/articleDate.ts` | Article date display helpers, preferring source publish text |
 
 ### fetcher — Scraping Service
 
@@ -36,20 +42,20 @@ ai-info/
 | `src/adapters/scraper.ts` | HTML scraper |
 | `src/sources/hackernews.ts` | HackerNews Top Stories (batched, 10 items/batch) |
 | `src/sources/github-trending.ts` | GitHub Trending scraper |
-| `src/core/storage.ts` | Data persistence (writes to `fetcher/data/index.json`) |
+| `src/core/storage.ts` | Data persistence and aggregated output generation |
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | Next.js 13+, React, TypeScript, Tailwind CSS |
+| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS |
 | Fetching | Node.js, TypeScript, Axios, Cheerio, RSS Parser |
 | Logging | Pino |
 | Testing | Vitest (unit), Playwright (E2E) |
 
 ## Quick Start
 
-**Prerequisites:** Node.js 18+
+**Prerequisites:** Node.js 18.18+; Node.js 22 recommended
 
 ```bash
 # 1. Install dependencies
@@ -79,6 +85,15 @@ cd web && npm test
 npm run test:e2e
 ```
 
+## Data And Date Rules
+
+- `publishedAt` is used for sorting, filtering, and time-range logic
+- `publishedLabel` stores the original publish-date text from the source when available
+- The UI prefers `publishedLabel` and only falls back to formatting `publishedAt`
+- Sources without a natural publish date, such as `github-trending`, still render range labels like "Trending today"
+
+This keeps the visible date aligned with the article itself instead of the fetch job timestamp.
+
 ## Production
 
 ```bash
@@ -92,7 +107,10 @@ npm run build:web
 npm start
 ```
 
-The frontend reads the data file path from the `DATA_FILE_PATH` environment variable (default: `../fetcher/data/index.json`).
+The frontend reads data in two modes:
+
+- Local: `DATA_FILE_PATH`, defaulting to `../fetcher/data/index.json`
+- Vercel: private Blob reads enabled by `BLOB_STORE=true`, targeting `ai-info/index.json`
 
 ## Data Flow
 
@@ -101,9 +119,9 @@ External sources (HN / RSS / GitHub)
               ↓
     fetcher (scrape, clean, merge)
               ↓
-    fetcher/data/index.json
+    local JSON or Vercel Blob
               ↓
-  web API /api/sources (reads file)
+  web (Server Components / API routes)
               ↓
       Browser (React renders)
 ```
