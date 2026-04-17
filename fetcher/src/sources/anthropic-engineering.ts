@@ -104,7 +104,7 @@ export async function fetchAnthropicEngineering(source: SourceConfig): Promise<A
 
     const publishedAt = raw.publishedOn
       ? new Date(raw.publishedOn).toISOString()
-      : fetchedAt;
+      : undefined;
 
     articles.push({
       id: generateArticleId(source.id, url, title),

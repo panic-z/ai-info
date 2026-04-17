@@ -3,7 +3,7 @@ export interface Article {
   title: string;
   summary?: string;
   url: string;
-  publishedAt: string;
+  publishedAt?: string;
   publishedLabel?: string;
   author?: string;
   sourceId: string;

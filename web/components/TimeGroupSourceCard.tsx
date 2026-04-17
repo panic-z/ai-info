@@ -44,8 +44,8 @@ export default function TimeGroupSourceCard({ source, readArticleIds, onMarkRead
   }, [selectedRange]);
 
   const sortedItems: Article[] = [...source.items].sort((a, b) => {
-    const dateA = new Date(a.publishedAt).getTime();
-    const dateB = new Date(b.publishedAt).getTime();
+    const dateA = new Date(a.publishedAt ?? a.fetchedAt).getTime();
+    const dateB = new Date(b.publishedAt ?? b.fetchedAt).getTime();
     if (isNaN(dateA) && isNaN(dateB)) return 0;
     if (isNaN(dateA)) return 1;
     if (isNaN(dateB)) return -1;

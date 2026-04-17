@@ -44,4 +44,23 @@ describe('article date display helpers', () => {
     expect(getArticleDisplayDate(article, 'zh')).toBe('日期未知');
     expect(getArticleDisplayDateShort(article, 'en')).toBe('Unknown date');
   });
+
+  it('falls back to unknown text when publishedAt is missing', () => {
+    const article = makeArticle({ publishedAt: undefined });
+
+    expect(getArticleDisplayDate(article, 'zh')).toBe('日期未知');
+    expect(getArticleDisplayDateShort(article, 'en')).toBe('Unknown date');
+  });
+
+  it('treats publishedAt === fetchedAt (legacy fetch fallback) as missing', () => {
+    const sameTime = '2026-04-17T10:00:00.000Z';
+    const article = makeArticle({
+      publishedAt: sameTime,
+      fetchedAt: sameTime,
+      publishedLabel: undefined,
+    });
+
+    expect(getArticleDisplayDate(article, 'zh')).toBe('日期未知');
+    expect(getArticleDisplayDateShort(article, 'en')).toBe('Unknown date');
+  });
 });

@@ -20,14 +20,14 @@ export default function CategoryCard({ category, readArticleIds, onMarkRead }: C
   const allArticles: Article[] = category.sources
     .flatMap(source => source.items)
     .sort((a, b) => {
-      const dateA = new Date(a.publishedAt).getTime();
-      const dateB = new Date(b.publishedAt).getTime();
-      
-      // Handle invalid dates - push them to the end
+      const dateA = new Date(a.publishedAt ?? a.fetchedAt).getTime();
+      const dateB = new Date(b.publishedAt ?? b.fetchedAt).getTime();
+
+      // Handle missing/invalid dates - push them to the end
       if (isNaN(dateA) && isNaN(dateB)) return 0;
       if (isNaN(dateA)) return 1;
       if (isNaN(dateB)) return -1;
-      
+
       return dateB - dateA;
     });
   
