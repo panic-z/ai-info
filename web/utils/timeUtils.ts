@@ -43,43 +43,40 @@ export function getThisYearBounds(): { start: Date; end: Date } {
  * Check if a date string is within a time range
  * Special handling for GitHub Trending items with timeRange field
  */
-function isInTimeRange(publishedAt: string, start: Date, end: Date, timeRange?: string, timePeriod?: 'today' | 'thisWeek' | 'thisMonth'): boolean {
-  try {
-    // Special handling for GitHub Trending
-    if (timeRange && timePeriod) {
-      // Map time period to GitHub Trending's timeRange
-      const rangeMapping = {
-        'today': 'daily',
-        'thisWeek': 'weekly',
-        'thisMonth': 'monthly'
-      };
-      return timeRange === rangeMapping[timePeriod];
-    }
-    
-    const date = new Date(publishedAt);
-    if (isNaN(date.getTime())) return false;
-    return date >= start && date <= end;
-  } catch {
-    return false;
+function isInTimeRange(publishedAt: string | undefined, start: Date, end: Date, timeRange?: string, timePeriod?: 'today' | 'thisWeek' | 'thisMonth'): boolean {
+  // Special handling for GitHub Trending
+  if (timeRange && timePeriod) {
+    // Map time period to GitHub Trending's timeRange
+    const rangeMapping = {
+      'today': 'daily',
+      'thisWeek': 'weekly',
+      'thisMonth': 'monthly'
+    };
+    return timeRange === rangeMapping[timePeriod];
   }
+
+  if (!publishedAt) return false;
+  const date = new Date(publishedAt);
+  if (isNaN(date.getTime())) return false;
+  return date >= start && date <= end;
 }
 
-export function isInToday(publishedAt: string, timeRange?: string): boolean {
+export function isInToday(publishedAt: string | undefined, timeRange?: string): boolean {
   const { start, end } = getTodayBounds();
   return isInTimeRange(publishedAt, start, end, timeRange, 'today');
 }
 
-export function isInThisWeek(publishedAt: string, timeRange?: string): boolean {
+export function isInThisWeek(publishedAt: string | undefined, timeRange?: string): boolean {
   const { start, end } = getThisWeekBounds();
   return isInTimeRange(publishedAt, start, end, timeRange, 'thisWeek');
 }
 
-export function isInThisMonth(publishedAt: string, timeRange?: string): boolean {
+export function isInThisMonth(publishedAt: string | undefined, timeRange?: string): boolean {
   const { start, end } = getThisMonthBounds();
   return isInTimeRange(publishedAt, start, end, timeRange, 'thisMonth');
 }
 
-export function isInThisYear(publishedAt: string): boolean {
+export function isInThisYear(publishedAt: string | undefined): boolean {
   const { start, end } = getThisYearBounds();
   return isInTimeRange(publishedAt, start, end);
 }

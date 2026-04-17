@@ -55,7 +55,7 @@ export async function fetchOpenAIResearch(source: SourceConfig): Promise<Article
 
     const slug = indexMatch[1];
     const title = slugToTitle(slug);
-    const publishedAt = lastmod ? new Date(lastmod).toISOString() : fetchedAt;
+    const publishedAt = lastmod ? new Date(lastmod).toISOString() : undefined;
 
     articles.push({
       id: generateArticleId(source.id, url, title),

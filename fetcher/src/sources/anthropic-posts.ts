@@ -104,7 +104,7 @@ async function fetchAnthropicPage(source: SourceConfig, basePath: string): Promi
 
     const publishedAt = raw.publishedOn
       ? new Date(raw.publishedOn).toISOString()
-      : fetchedAt;
+      : undefined;
 
     articles.push({
       id: generateArticleId(source.id, url, title),

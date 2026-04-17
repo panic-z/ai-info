@@ -30,7 +30,7 @@ export async function fetchHackerNews(source: SourceConfig): Promise<Article[]> 
             title: item.title,
             summary: item.text ? item.text.substring(0, 200) : undefined,
             url: item.url || `https://news.ycombinator.com/item?id=${item.id}`,
-            publishedAt: item.time ? new Date(item.time * 1000).toISOString() : fetchedAt,
+            publishedAt: item.time ? new Date(item.time * 1000).toISOString() : undefined,
             author: item.by,
             sourceId: source.id,
             sourceName: source.name,
